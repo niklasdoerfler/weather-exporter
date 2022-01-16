@@ -37,8 +37,14 @@ func loadConfig() {
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
 
+	viper.SetDefault("webserverPort", 8080)
+	viper.SetDefault("loglevel", "info")
+	viper.SetDefault("jsonExporter", map[string]interface{}{"enabled": true})
+	viper.SetDefault("prometheusExporter", map[string]interface{}{"enabled": true})
+	viper.SetDefault("influxDbExporter", map[string]interface{}{"enabled": false})
+
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("Error reading config file, %s", err)
+		log.Warnf("Error reading config file, using default values. %s", err)
 	}
 	err := viper.Unmarshal(&config)
 	if err != nil {

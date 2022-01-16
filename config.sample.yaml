@@ -1,0 +1,16 @@
+webserverPort: 8080
+
+jsonExporter:
+  enabled: true
+
+prometheusExporter:
+  enabled: true
+
+influxDbExporter:
+  enabled: false
+  server: 1.2.3.4
+  port: 8086
+  user: user
+  password: password
+  database: database
+  measurement: measurement
