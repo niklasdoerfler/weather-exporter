@@ -6,4 +6,5 @@ type Configuration struct {
 	JsonExporter       JsonExporterConfiguration
 	PrometheusExporter PrometheusExporterConfiguration
 	InfluxDbExporter   InfluxExporterConfiguration
+	Mqtt               MqttConfiguration
 }

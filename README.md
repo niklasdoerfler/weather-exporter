@@ -67,8 +67,6 @@ follows:
 
 This exporter provides prometheus compatible metrics on the metrics endpoint (`/metrics`).
 
-__TODO: Finish implementing gauges for all available measurement data.__
-
 ## Config
 
 The service can be configured by a `config.yaml` file placed next to the binary.
@@ -78,6 +76,8 @@ The following represents an example config:
 ```yaml
 webserverPort: 8080
 
+logLevel: info
+
 jsonExporter:
   enabled: true
 
@@ -85,11 +85,20 @@ prometheusExporter:
   enabled: true
 
 influxDbExporter:
-  enabled: true
+  enabled: false
   server: 1.2.3.4
   port: 8086
   user: user
   password: password
   database: database
   measurement: measurement
+
+mqtt:
+  enabled: false
+  brokerAddress: 1.2.3.4
+  brokerPort: 1883
+  username: username
+  password: password
+  clientId: weather-exporter
+  topicPrefix: weather
 ```

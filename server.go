@@ -2,6 +2,7 @@ package main
 
 import (
 	"bresser-weather-exporter/exporter/influxDb"
+	"bresser-weather-exporter/exporter/mqtt"
 	"bresser-weather-exporter/exporter/prometheus"
 	"bresser-weather-exporter/model"
 	"bresser-weather-exporter/model/configuration"
@@ -83,6 +84,7 @@ func weatherStationEventHandler(w http.ResponseWriter, req *http.Request) {
 	parseDataRecord(keys)
 	prometheus.UpdatePromGauges(weatherData)
 	influxDb.WriteDataToDb(weatherData)
+	mqtt.PublishData(weatherData)
 
 	_, err := io.WriteString(w, "success")
 	if err != nil {
@@ -124,5 +126,6 @@ func main() {
 	log.Infof("Hello Weather Exporter %s! ☀ (Build: %s)", BuildVersion, BuildTime)
 	loadConfig()
 	influxDb.SetupInfluxDb(&config)
+	mqtt.SetupMqttConnection(&config)
 	runWebserver()
 }
