@@ -1,5 +1,7 @@
 webserverPort: 8080
 
+logLevel: info
+
 jsonExporter:
   enabled: true
 
@@ -14,3 +16,12 @@ influxDbExporter:
   password: password
   database: database
   measurement: measurement
+
+mqtt:
+  enabled: false
+  brokerAddress: 1.2.3.4
+  brokerPort: 1883
+  username: username
+  password: password
+  clientId: weather-exporter
+  topicPrefix: weather
