@@ -58,3 +58,7 @@ func parseSpeed(record string) (float32, float32) {
 
 	return float32(math.Round(speed*100) / 100), float32(math.Round(speedMetric*100) / 100)
 }
+
+func calculateAbsoluteHumidity(relativeHumidity int, temperature float64) float64 {
+	return (6.112 * math.Exp((17.67*temperature)/(temperature+243.5)) * float64(relativeHumidity) * 2.1674) / (273.15 + temperature)
+}
