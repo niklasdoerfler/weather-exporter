@@ -32,9 +32,19 @@ var (
 		Help: "The outside relative humidity in percent.",
 	})
 
+	gaugeWeatherHumidityOutdoorAbsolute = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "weather_humidity_outdoor_absolute",
+		Help: "The outside absolute humidity in gram per cubic meter.",
+	})
+
 	gaugeWeatherHumidityIndoor = promauto.NewGauge(prometheus.GaugeOpts{
 		Name: "weather_humidity_indoor",
 		Help: "The inside relative humidity in percent.",
+	})
+
+	gaugeWeatherHumidityIndoorAbsolute = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: "weather_humidity_indoor_absolute",
+		Help: "The inside absolute humidity in gram per cubic meter.",
 	})
 
 	gaugeWeatherUv = promauto.NewGauge(prometheus.GaugeOpts{
@@ -119,7 +129,9 @@ func UpdatePromGauges(data *model.WeatherData) {
 	gaugeWeatherTemperatureIndoorCelsius.Add(float64(data.TemperatureIndoorCelsius))
 	gaugeWeatherTemperatureIndoorFahrenheit.Add(float64(data.TemperatureIndoorFahrenheit))
 	gaugeWeatherHumidityOutdoor.Add(float64(data.HumidityOutdoor))
+	gaugeWeatherHumidityOutdoorAbsolute.Add(float64(data.HumidityOutdoorAbsolute))
 	gaugeWeatherHumidityIndoor.Add(float64(data.HumidityIndoor))
+	gaugeWeatherHumidityIndoorAbsolute.Add(float64(data.HumidityIndoorAbsolute))
 	gaugeWeatherUv.Add(float64(data.Uv))
 	gaugeWeatherBarometerHektopascal.Add(float64(data.BarometerHektopascal))
 	gaugeWeatherBarometerMercury.Add(float64(data.BarometerMercury))

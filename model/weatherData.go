@@ -8,7 +8,9 @@ type WeatherData struct {
 	TemperatureOutdoorCelsius    float32
 	TemperatureOutdoorFahrenheit float32
 	HumidityIndoor               int
+	HumidityIndoorAbsolute       float32
 	HumidityOutdoor              int
+	HumidityOutdoorAbsolute      float32
 	Uv                           float32
 	BarometerHektopascal         float32
 	BarometerMercury             float32
