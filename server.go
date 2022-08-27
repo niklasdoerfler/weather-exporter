@@ -7,14 +7,16 @@ import (
 	"bresser-weather-exporter/model"
 	"bresser-weather-exporter/model/configuration"
 	"encoding/json"
+	"flag"
 	"fmt"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 	"io"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 const (
@@ -31,12 +33,17 @@ var (
 
 var (
 	weatherData = new(model.WeatherData)
+	configPath  string
 	config      configuration.Configuration
 )
 
+func init() {
+	flag.StringVar(&configPath, "config_path", ".", "path to search for a config.yaml")
+}
+
 func loadConfig() {
 	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
+	viper.AddConfigPath(configPath)
 
 	viper.SetDefault("webserverPort", 8080)
 	viper.SetDefault("loglevel", "info")
@@ -121,6 +128,7 @@ func jsonExporterHandler(w http.ResponseWriter, _ *http.Request) {
 }
 
 func main() {
+	flag.Parse()
 	log.SetFormatter(&log.TextFormatter{
 		ForceColors:   true,
 		FullTimestamp: true,
