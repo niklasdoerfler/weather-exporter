@@ -2,6 +2,7 @@ package prometheus
 
 import (
 	"bresser-weather-exporter/model"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -124,27 +125,27 @@ var (
 )
 
 func UpdatePromGauges(data *model.WeatherData) {
-	gaugeWeatherTemperatureOutdoorCelsius.Add(float64(data.TemperatureOutdoorCelsius))
-	gaugeWeatherTemperatureOutdoorFahrenheit.Add(float64(data.TemperatureOutdoorFahrenheit))
-	gaugeWeatherTemperatureIndoorCelsius.Add(float64(data.TemperatureIndoorCelsius))
-	gaugeWeatherTemperatureIndoorFahrenheit.Add(float64(data.TemperatureIndoorFahrenheit))
-	gaugeWeatherHumidityOutdoor.Add(float64(data.HumidityOutdoor))
-	gaugeWeatherHumidityOutdoorAbsolute.Add(float64(data.HumidityOutdoorAbsolute))
-	gaugeWeatherHumidityIndoor.Add(float64(data.HumidityIndoor))
-	gaugeWeatherHumidityIndoorAbsolute.Add(float64(data.HumidityIndoorAbsolute))
-	gaugeWeatherUv.Add(float64(data.Uv))
-	gaugeWeatherBarometerHektopascal.Add(float64(data.BarometerHektopascal))
-	gaugeWeatherBarometerMercury.Add(float64(data.BarometerMercury))
-	gaugeWeatherRainDailyMillimeter.Add(float64(data.RainDailyMillimeter))
-	gaugeWeatherRainDailyInch.Add(float64(data.RainDailyInch))
-	gaugeWeatherRainCurrentMillimeter.Add(float64(data.RainCurrentMillimeter))
-	gaugeWeatherRainCurrentInch.Add(float64(data.RainCurrentInch))
-	gaugeWeatherDewpointOutdoorCelsius.Add(float64(data.DewpointCelsius))
-	gaugeWeatherDewpointOutdoorFahrenheit.Add(float64(data.DewpointFahrenheit))
-	gaugeWeatherSolarRadiation.Add(float64(data.SolarRadiation))
-	gaugeWeatherWindDirection.Add(float64(data.WindDirection))
-	gaugeWeatherWindGustKilometerPerHour.Add(float64(data.WindSpeedKilometerPerHour))
-	gaugeWeatherWindGustMilesPerHour.Add(float64(data.WindGustMilesPerHour))
-	gaugeWeatherWindSpeedKilometerPerHour.Add(float64(data.WindSpeedKilometerPerHour))
-	gaugeWeatherWindSpeedMilesPerHour.Add(float64(data.WindSpeedMilesPerHours))
+	gaugeWeatherTemperatureOutdoorCelsius.Set(float64(data.TemperatureOutdoorCelsius))
+	gaugeWeatherTemperatureOutdoorFahrenheit.Set(float64(data.TemperatureOutdoorFahrenheit))
+	gaugeWeatherTemperatureIndoorCelsius.Set(float64(data.TemperatureIndoorCelsius))
+	gaugeWeatherTemperatureIndoorFahrenheit.Set(float64(data.TemperatureIndoorFahrenheit))
+	gaugeWeatherHumidityOutdoor.Set(float64(data.HumidityOutdoor))
+	gaugeWeatherHumidityOutdoorAbsolute.Set(float64(data.HumidityOutdoorAbsolute))
+	gaugeWeatherHumidityIndoor.Set(float64(data.HumidityIndoor))
+	gaugeWeatherHumidityIndoorAbsolute.Set(float64(data.HumidityIndoorAbsolute))
+	gaugeWeatherUv.Set(float64(data.Uv))
+	gaugeWeatherBarometerHektopascal.Set(float64(data.BarometerHektopascal))
+	gaugeWeatherBarometerMercury.Set(float64(data.BarometerMercury))
+	gaugeWeatherRainDailyMillimeter.Set(float64(data.RainDailyMillimeter))
+	gaugeWeatherRainDailyInch.Set(float64(data.RainDailyInch))
+	gaugeWeatherRainCurrentMillimeter.Set(float64(data.RainCurrentMillimeter))
+	gaugeWeatherRainCurrentInch.Set(float64(data.RainCurrentInch))
+	gaugeWeatherDewpointOutdoorCelsius.Set(float64(data.DewpointCelsius))
+	gaugeWeatherDewpointOutdoorFahrenheit.Set(float64(data.DewpointFahrenheit))
+	gaugeWeatherSolarRadiation.Set(float64(data.SolarRadiation))
+	gaugeWeatherWindDirection.Set(float64(data.WindDirection))
+	gaugeWeatherWindGustKilometerPerHour.Set(float64(data.WindSpeedKilometerPerHour))
+	gaugeWeatherWindGustMilesPerHour.Set(float64(data.WindGustMilesPerHour))
+	gaugeWeatherWindSpeedKilometerPerHour.Set(float64(data.WindSpeedKilometerPerHour))
+	gaugeWeatherWindSpeedMilesPerHour.Set(float64(data.WindSpeedMilesPerHours))
 }
