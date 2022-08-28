@@ -25,3 +25,4 @@ go.work
 
 # Config file
 config.yaml
+/bresser-weather-exporter
