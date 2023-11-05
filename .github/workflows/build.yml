@@ -17,4 +17,4 @@ jobs:
         run: go mod tidy
 
       - name: Build
-        run: go build server.go
+        run: go build
