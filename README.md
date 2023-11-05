@@ -29,7 +29,7 @@ project accordingly also into metric units. The values of both unit systems are 
 ### Influx DB
 
 The measured values received by the weather station can be written into an influx database. Influx settings are set via
-config file (see config example below).
+config file (see config example below). The implementation is compatible with influxdb v1 and v2. 
 
 ### HTTP JSON
 
@@ -88,10 +88,10 @@ influxDbExporter:
   enabled: false
   server: 1.2.3.4
   port: 8086
-  user: user
-  password: password
-  database: database
-  measurement: measurement
+  org: <org>
+  token: <token> or <username>:<password>
+  database: <database(bucket)>
+  measurement: <measurement>
 
 mqtt:
   enabled: false

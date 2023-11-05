@@ -5,6 +5,7 @@ import (
 	"bresser-weather-exporter/model/configuration"
 	"context"
 	"fmt"
+
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
 	log "github.com/sirupsen/logrus"
@@ -21,9 +22,9 @@ func SetupInfluxDb(config *configuration.Configuration) {
 		log.Info("Configuring influx db...")
 		influxClient = influxdb2.NewClient(
 			fmt.Sprintf("http://%s:%d", config.InfluxDbExporter.Server, config.InfluxDbExporter.Port),
-			fmt.Sprintf("%s:%s", config.InfluxDbExporter.Username, config.InfluxDbExporter.Password),
+			fmt.Sprintf("%s", config.InfluxDbExporter.Token),
 		)
-		influxWriteAPI = influxClient.WriteAPIBlocking("", config.InfluxDbExporter.Database)
+		influxWriteAPI = influxClient.WriteAPIBlocking(config.InfluxDbExporter.Org, config.InfluxDbExporter.Database)
 		measurementName = config.InfluxDbExporter.Measurement
 	}
 }
