@@ -12,8 +12,8 @@ influxDbExporter:
   enabled: false
   server: 1.2.3.4
   port: 8086
-  database: database
-  measurement: measurement(database)
+  database: database(bucket)
+  measurement: measurement
   token: token
   org : org
 
