@@ -12,10 +12,10 @@ influxDbExporter:
   enabled: false
   server: 1.2.3.4
   port: 8086
-  database: database(bucket)
-  measurement: measurement
-  token: token
-  org : org
+  org: <org>
+  token: <token> or <username>:<password>
+  database: <database(bucket)>
+  measurement: <measurement>
 
 mqtt:
   enabled: false
