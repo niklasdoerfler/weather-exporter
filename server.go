@@ -81,7 +81,6 @@ func runWebserver() {
 		http.Handle("/metrics", promhttp.Handler())
 	}
 
-	//	log.Info(fmt.Sprintf("Starting Webserver on port %d", config.WebserverPort))
 
 	if config.WebserverHTTPS.Enabled {
 		log.Info(fmt.Sprintf("Starting HTTPS Webserver on port %d", config.WebserverPort))
