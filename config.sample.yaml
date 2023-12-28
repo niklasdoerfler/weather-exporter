@@ -1,5 +1,10 @@
 webserverPort: 8080
 
+WebserverKey: "server.key"
+WebserverCer: "server.cer"
+WebserverHTTPS:
+  enabled: false
+
 logLevel: info
 
 jsonExporter:

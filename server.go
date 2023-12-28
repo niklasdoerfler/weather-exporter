@@ -47,9 +47,12 @@ func loadConfig() {
 
 	viper.SetDefault("webserverPort", 8080)
 	viper.SetDefault("loglevel", "info")
+	viper.SetDefault("WebserverKey", "server.key")
+	viper.SetDefault("WebserverCer", "server.cer")
 	viper.SetDefault("jsonExporter", map[string]interface{}{"enabled": true})
 	viper.SetDefault("prometheusExporter", map[string]interface{}{"enabled": true})
 	viper.SetDefault("influxDbExporter", map[string]interface{}{"enabled": false})
+	viper.SetDefault("WebserverHTTPS", map[string]interface{}{"enabled": false})
 
 	if err := viper.ReadInConfig(); err != nil {
 		log.Warnf("Error reading config file, using default values. %s", err)
@@ -78,10 +81,19 @@ func runWebserver() {
 		http.Handle("/metrics", promhttp.Handler())
 	}
 
-	log.Info(fmt.Sprintf("Starting Webserver on port %d", config.WebserverPort))
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", config.WebserverPort), nil); err != nil {
-		log.Fatal(err)
+
+	if config.WebserverHTTPS.Enabled {
+		log.Info(fmt.Sprintf("Starting HTTPS Webserver on port %d", config.WebserverPort))
+		if err := http.ListenAndServeTLS(fmt.Sprintf(":%d", config.WebserverPort), config.WebserverCer, config.WebserverKey, nil); err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		log.Info(fmt.Sprintf("Starting Webserver on port %d", config.WebserverPort))
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.WebserverPort), nil); err != nil {
+			log.Fatal(err)
+		}
 	}
+
 }
 
 func weatherStationEventHandler(w http.ResponseWriter, req *http.Request) {
