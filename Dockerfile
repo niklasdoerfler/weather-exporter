@@ -8,7 +8,10 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o weather-exporter .
+# Version and build time shown on startup, build time defaults to the time of the image build
+ARG BUILD_VERSION=dev
+ARG BUILD_TIME
+RUN go build -ldflags "-X 'main.BuildVersion=${BUILD_VERSION}' -X 'main.BuildTime=${BUILD_TIME:-$(date +'%Y-%m-%dT%H:%M:%S%z')}'" -o weather-exporter .
 
 
 
