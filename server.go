@@ -54,7 +54,25 @@ func loadConfig() {
 	viper.SetDefault("loglevel", "info")
 	viper.SetDefault("jsonExporter", map[string]interface{}{"enabled": true})
 	viper.SetDefault("prometheusExporter", map[string]interface{}{"enabled": true})
-	viper.SetDefault("influxDbExporter", map[string]interface{}{"enabled": false})
+	// Every key needs a default, otherwise viper ignores the corresponding environment variable on Unmarshal
+	viper.SetDefault("influxDbExporter", map[string]interface{}{
+		"enabled":     false,
+		"server":      "",
+		"port":        8086,
+		"org":         "",
+		"token":       "",
+		"database":    "",
+		"measurement": "",
+	})
+	viper.SetDefault("mqtt", map[string]interface{}{
+		"enabled":       false,
+		"brokerAddress": "",
+		"brokerPort":    1883,
+		"username":      "",
+		"password":      "",
+		"clientId":      "weather-exporter",
+		"topicPrefix":   "weather",
+	})
 
 	if err := viper.ReadInConfig(); err != nil {
 		log.Infof("Unable to read config file, using default values or environment. %s", err)

@@ -1,10 +1,10 @@
-version: '3.8'
-
 services:
   weather-exporter:
-    build: .
+    image: ghcr.io/niklasdoerfler/weather-exporter:latest
+    # build: .
+    restart: unless-stopped
     environment:
-      - WEATHER_EXPORTER_WEBSERVERPORT=8082
+      - WEATHER_EXPORTER_WEBSERVERPORT=8080
       - WEATHER_EXPORTER_LOGLEVEL=info
       - WEATHER_EXPORTER_JSONEXPORTER_ENABLED=true
       - WEATHER_EXPORTER_PROMETHEUSEXPORTER_ENABLED=true
@@ -23,4 +23,4 @@ services:
       - WEATHER_EXPORTER_MQTT_CLIENTID=weather-exporter
       - WEATHER_EXPORTER_MQTT_TOPICPREFIX=weather
     ports:
-      - "8080:8080"
+      - "8080:8080" # must match WEATHER_EXPORTER_WEBSERVERPORT
