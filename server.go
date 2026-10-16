@@ -12,6 +12,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -45,17 +46,36 @@ func loadConfig() {
 	viper.SetConfigName("config")
 	viper.AddConfigPath(configPath)
 
+	viper.AutomaticEnv()
+	viper.SetEnvPrefix("weather_exporter")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
 	viper.SetDefault("webserverPort", 8080)
 	viper.SetDefault("loglevel", "info")
-	viper.SetDefault("WebserverKey", "server.key")
-	viper.SetDefault("WebserverCer", "server.cer")
 	viper.SetDefault("jsonExporter", map[string]interface{}{"enabled": true})
 	viper.SetDefault("prometheusExporter", map[string]interface{}{"enabled": true})
-	viper.SetDefault("influxDbExporter", map[string]interface{}{"enabled": false})
-	viper.SetDefault("WebserverHTTPS", map[string]interface{}{"enabled": false})
+	// Every key needs a default, otherwise viper ignores the corresponding environment variable on Unmarshal
+	viper.SetDefault("influxDbExporter", map[string]interface{}{
+		"enabled":     false,
+		"server":      "",
+		"port":        8086,
+		"org":         "",
+		"token":       "",
+		"database":    "",
+		"measurement": "",
+	})
+	viper.SetDefault("mqtt", map[string]interface{}{
+		"enabled":       false,
+		"brokerAddress": "",
+		"brokerPort":    1883,
+		"username":      "",
+		"password":      "",
+		"clientId":      "weather-exporter",
+		"topicPrefix":   "weather",
+	})
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Warnf("Error reading config file, using default values. %s", err)
+		log.Infof("Unable to read config file, using default values or environment. %s", err)
 	}
 	err := viper.Unmarshal(&config)
 	if err != nil {
@@ -81,19 +101,10 @@ func runWebserver() {
 		http.Handle("/metrics", promhttp.Handler())
 	}
 
-
-	if config.WebserverHTTPS.Enabled {
-		log.Info(fmt.Sprintf("Starting HTTPS Webserver on port %d", config.WebserverPort))
-		if err := http.ListenAndServeTLS(fmt.Sprintf(":%d", config.WebserverPort), config.WebserverCer, config.WebserverKey, nil); err != nil {
-			log.Fatal(err)
-		}
-	} else {
-		log.Info(fmt.Sprintf("Starting Webserver on port %d", config.WebserverPort))
-		if err := http.ListenAndServe(fmt.Sprintf(":%d", config.WebserverPort), nil); err != nil {
-			log.Fatal(err)
-		}
+	log.Info(fmt.Sprintf("Starting Webserver on port %d", config.WebserverPort))
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", config.WebserverPort), nil); err != nil {
+		log.Fatal(err)
 	}
-
 }
 
 func weatherStationEventHandler(w http.ResponseWriter, req *http.Request) {
