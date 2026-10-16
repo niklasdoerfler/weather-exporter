@@ -18,6 +18,6 @@ WORKDIR /app
 
 COPY --from=builder /app/weather-exporter .
 
-EXPOSE 8080
+EXPOSE 8080 8443
 USER app
 CMD ["./weather-exporter"]

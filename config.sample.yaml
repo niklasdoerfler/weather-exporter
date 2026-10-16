@@ -1,9 +1,10 @@
 webserverPort: 8080
 
-WebserverKey: "server.key"
-WebserverCer: "server.cer"
-WebserverHTTPS:
+https:
   enabled: false
+  port: 8443
+  certFile: server.crt
+  keyFile: server.key
 
 logLevel: info
 

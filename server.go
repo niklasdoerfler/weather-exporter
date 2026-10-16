@@ -55,6 +55,12 @@ func loadConfig() {
 	viper.SetDefault("jsonExporter", map[string]interface{}{"enabled": true})
 	viper.SetDefault("prometheusExporter", map[string]interface{}{"enabled": true})
 	// Every key needs a default, otherwise viper ignores the corresponding environment variable on Unmarshal
+	viper.SetDefault("https", map[string]interface{}{
+		"enabled":  false,
+		"port":     8443,
+		"certFile": "server.crt",
+		"keyFile":  "server.key",
+	})
 	viper.SetDefault("influxDbExporter", map[string]interface{}{
 		"enabled":     false,
 		"server":      "",
@@ -99,6 +105,16 @@ func runWebserver() {
 
 	if config.PrometheusExporter.Enabled {
 		http.Handle("/metrics", promhttp.Handler())
+	}
+
+	// Optional HTTPS listener in addition to plain HTTP, e.g. for newer weather stations which only send via HTTPS
+	if config.Https.Enabled {
+		go func() {
+			log.Info(fmt.Sprintf("Starting HTTPS Webserver on port %d", config.Https.Port))
+			if err := http.ListenAndServeTLS(fmt.Sprintf(":%d", config.Https.Port), config.Https.CertFile, config.Https.KeyFile, nil); err != nil {
+				log.Fatal(err)
+			}
+		}()
 	}
 
 	log.Info(fmt.Sprintf("Starting Webserver on port %d", config.WebserverPort))

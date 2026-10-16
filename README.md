@@ -24,6 +24,20 @@ values are transferred via GET parameters. Such a request looks like the followi
 Since the transmitted measured values are available only in imperial format, these are converted afterwards by this
 project accordingly also into metric units. The values of both unit systems are then provided.
 
+### HTTPS
+
+Some newer weather stations only transmit their data via HTTPS. For these, an additional HTTPS listener can be enabled
+(`https.enabled`). It serves the same endpoints as the plain HTTP webserver, which keeps running on `webserverPort`, so
+e.g. Prometheus can still scrape `/metrics` via HTTP.
+
+A certificate and key file are required. Weather stations usually don't validate the certificate, so a self-signed one
+is sufficient:
+
+```shell
+openssl req -x509 -newkey rsa:4096 -nodes -days 3650 -subj "/CN=weather-exporter" \
+  -keyout server.key -out server.crt
+```
+
 ## Exporters
 
 ### Influx DB
@@ -75,6 +89,12 @@ The following represents an example config:
 
 ```yaml
 webserverPort: 8080
+
+https:
+  enabled: false
+  port: 8443
+  certFile: server.crt
+  keyFile: server.key
 
 logLevel: info
 
