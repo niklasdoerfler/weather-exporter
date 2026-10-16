@@ -1,5 +1,11 @@
 webserverPort: 8080
 
+https:
+  enabled: false
+  port: 8443
+  certFile: server.crt
+  keyFile: server.key
+
 logLevel: info
 
 jsonExporter:

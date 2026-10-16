@@ -6,6 +6,10 @@ services:
     environment:
       - WEATHER_EXPORTER_WEBSERVERPORT=8080
       - WEATHER_EXPORTER_LOGLEVEL=info
+      - WEATHER_EXPORTER_HTTPS_ENABLED=false
+      - WEATHER_EXPORTER_HTTPS_PORT=8443
+      - WEATHER_EXPORTER_HTTPS_CERTFILE=/certs/server.crt
+      - WEATHER_EXPORTER_HTTPS_KEYFILE=/certs/server.key
       - WEATHER_EXPORTER_JSONEXPORTER_ENABLED=true
       - WEATHER_EXPORTER_PROMETHEUSEXPORTER_ENABLED=true
       - WEATHER_EXPORTER_INFLUXDBEXPORTER_ENABLED=false
@@ -24,3 +28,6 @@ services:
       - WEATHER_EXPORTER_MQTT_TOPICPREFIX=weather
     ports:
       - "8080:8080" # must match WEATHER_EXPORTER_WEBSERVERPORT
+      # - "443:8443" # must match WEATHER_EXPORTER_HTTPS_PORT, only needed with HTTPS enabled
+    # volumes:
+    #   - ./certs:/certs:ro # only needed with HTTPS enabled

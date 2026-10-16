@@ -26,3 +26,9 @@ go.work
 # Config file
 config.yaml
 /bresser-weather-exporter
+
+# TLS certificates
+*.key
+*.crt
+*.cer
+*.pem
